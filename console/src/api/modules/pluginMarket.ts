@@ -17,7 +17,7 @@ export interface MarketPluginEntry {
   view_count: number;
   details_url: string | null;
   locales: Record<string, MarketPluginLocale>;
-  /** QwenPaw major-version compatibility labels, e.g. `["1.x"]`. */
+  /** Cognitwin major-version compatibility labels, e.g. `["1.x"]`. */
   qwenpaw_compat_labels?: string[];
   /** Whether this plugin is featured (true = featured, false or undefined = not). */
   is_featured?: boolean;

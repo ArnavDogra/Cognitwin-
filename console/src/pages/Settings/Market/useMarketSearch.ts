@@ -86,7 +86,7 @@ export function useMarketSearch(): MarketSearchState {
     setAutoLoadBlockedState(blocked);
   }, []);
 
-  // Keep server-provided provider order (QwenPaw first) for ranking.
+  // Keep server-provided provider order (Cognitwin first) for ranking.
   const providerKeyList = useMemo(() => {
     const ordered = providers
       .map((p) => p.key)

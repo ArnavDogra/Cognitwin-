@@ -16,7 +16,7 @@ import {
   extractLatestSnapshotFromCards,
 } from "../turnUsage";
 import { useTurnUsageStore } from "../turnUsageStore";
-import { QWENPAW_CLIENT_MESSAGE_ID_KEY } from "../../../utils/clientMessageId";
+import { COGNITWIN_CLIENT_MESSAGE_ID_KEY } from "../../../utils/clientMessageId";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -171,7 +171,7 @@ const extractClientMessageId = (metadata: unknown): string | undefined => {
     return undefined;
   }
   const candidate = (nestedMetadata as Record<string, unknown>)[
-    QWENPAW_CLIENT_MESSAGE_ID_KEY
+    COGNITWIN_CLIENT_MESSAGE_ID_KEY
   ];
   return typeof candidate === "string" ? candidate : undefined;
 };

@@ -45,7 +45,7 @@ function sessionsEqual(
   return true;
 }
 
-/** Sessions from QwenPaw backend include extra fields beyond the runtime UI type */
+/** Sessions from Cognitwin backend include extra fields beyond the runtime UI type */
 export interface ExtendedChatSession extends IAgentScopeRuntimeWebUISession {
   realId?: string;
   sessionId?: string;

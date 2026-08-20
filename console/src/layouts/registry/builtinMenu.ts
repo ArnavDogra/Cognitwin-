@@ -3,7 +3,7 @@
  *
  * Importing this module self-registers all builtins into menuRegistry, so the
  * Sidebar's `useMenuItems()` snapshot returns them on first render. Plugins
- * register via `QwenPaw.menu.add(...)` which lands in the same registry, so
+ * register via `Cognitwin.menu.add(...)` which lands in the same registry, so
  * Sidebar treats core + plugin items uniformly.
  *
  * ── Naming convention ──────────────────────────────────────────────────────
@@ -47,7 +47,7 @@ import {
 } from "@agentscope-ai/icons";
 import { GitBranch } from "lucide-react";
 import i18next from "i18next";
-import { Files } from "lucide-react";
+import { FolderOpen } from "lucide-react";
 import { menuRegistry } from "../../plugins/registry/store";
 import type { MenuItem } from "../../plugins/registry/types";
 
@@ -56,149 +56,156 @@ const navLabel = (key: string, defaultValue?: string) => (): string =>
   i18next.t(key, defaultValue ?? key);
 
 export const BUILTIN_MENU: MenuItem[] = [
-  // ── Agent-scoped (Sidebar Menu #1) ───────────────────────────────────────
+  // ── Primary (Sidebar Menu #1) ───────────────────────────────────────
   {
-    id: "core.inbox",
+    id: "core.memory",
     location: "primary.agentScoped",
-    label: navLabel("nav.inbox"),
-    icon: SparkEmailLine,
-    route: "core.inbox",
-    order: 10,
-  },
-
-  {
-    id: "core.app-center",
-    location: "primary.agentScoped",
-    label: navLabel("nav.apps", "Apps"),
-    icon: SparkMyApplicationLine,
-    route: "core.app-center",
-    order: 15,
-  },
-
-  // control-group
-  {
-    id: "core.control-group",
-    location: "primary.agentScoped",
-    label: navLabel("nav.control"),
-    isGroup: true,
-    order: 20,
-  },
-  {
-    id: "core.channels",
-    location: "primary.agentScoped",
-    parentId: "core.control-group",
-    label: navLabel("nav.channels"),
-    icon: SparkWifiLine,
-    route: "core.channels",
+    label: () => "Memory",
+    icon: SparkMagicWandLine,
+    route: "core.memory",
     order: 10,
   },
   {
-    id: "core.sessions",
+    id: "core.browser",
     location: "primary.agentScoped",
-    parentId: "core.control-group",
-    label: navLabel("nav.sessions"),
-    icon: SparkUserGroupLine,
-    route: "core.sessions",
+    label: () => "Browser",
+    icon: SparkInternetLine,
+    route: "core.browser",
     order: 20,
-  },
-  {
-    id: "core.cron-jobs",
-    location: "primary.agentScoped",
-    parentId: "core.control-group",
-    label: navLabel("nav.cronJobs"),
-    icon: SparkDateLine,
-    route: "core.cron-jobs",
-    order: 30,
-  },
-  {
-    id: "core.heartbeat",
-    location: "primary.agentScoped",
-    parentId: "core.control-group",
-    label: navLabel("nav.heartbeat"),
-    icon: SparkVoiceChat01Line,
-    route: "core.heartbeat",
-    order: 40,
-  },
-
-  // workspace-group
-  {
-    id: "core.workspace-group",
-    location: "primary.agentScoped",
-    label: navLabel("nav.agent"),
-    isGroup: true,
-    order: 30,
   },
   {
     id: "core.files",
     location: "primary.agentScoped",
-    parentId: "core.workspace-group",
     label: navLabel("nav.files"),
-    icon: Files,
+    icon: FolderOpen,
     route: "core.files",
-    order: 5,
+    order: 30,
+  },
+
+  // ── Developer Mode (Advanced Settings) ────────────────────────────────
+  {
+    id: "core.dev-group",
+    location: "primary.agentScoped",
+    label: () => "Developer Mode",
+    isGroup: true,
+    order: 100,
+  },
+  {
+    id: "core.inbox",
+    location: "primary.agentScoped",
+    parentId: "core.dev-group",
+    label: navLabel("nav.inbox"),
+    icon: SparkEmailLine,
+    route: "core.inbox",
+    order: 110,
+  },
+  {
+    id: "core.app-center",
+    location: "primary.agentScoped",
+    parentId: "core.dev-group",
+    label: navLabel("nav.apps", "Apps"),
+    icon: SparkMyApplicationLine,
+    route: "core.app-center",
+    order: 120,
+  },
+  {
+    id: "core.channels",
+    location: "primary.agentScoped",
+    parentId: "core.dev-group",
+    label: navLabel("nav.channels"),
+    icon: SparkWifiLine,
+    route: "core.channels",
+    order: 130,
+  },
+  {
+    id: "core.sessions",
+    location: "primary.agentScoped",
+    parentId: "core.dev-group",
+    label: navLabel("nav.sessions"),
+    icon: SparkUserGroupLine,
+    route: "core.sessions",
+    order: 140,
+  },
+  {
+    id: "core.cron-jobs",
+    location: "primary.agentScoped",
+    parentId: "core.dev-group",
+    label: navLabel("nav.cronJobs"),
+    icon: SparkDateLine,
+    route: "core.cron-jobs",
+    order: 150,
+  },
+  {
+    id: "core.heartbeat",
+    location: "primary.agentScoped",
+    parentId: "core.dev-group",
+    label: navLabel("nav.heartbeat"),
+    icon: SparkVoiceChat01Line,
+    route: "core.heartbeat",
+    order: 160,
   },
   {
     id: "core.skills",
     location: "primary.agentScoped",
-    parentId: "core.workspace-group",
+    parentId: "core.dev-group",
     label: navLabel("nav.skills"),
     icon: SparkMagicWandLine,
     route: "core.skills",
-    order: 10,
+    order: 170,
   },
   {
     id: "core.tools",
     location: "primary.agentScoped",
-    parentId: "core.workspace-group",
+    parentId: "core.dev-group",
     label: navLabel("nav.tools"),
     icon: SparkToolLine,
     route: "core.tools",
-    order: 20,
+    order: 180,
   },
   {
     id: "core.mcp",
     location: "primary.agentScoped",
-    parentId: "core.workspace-group",
+    parentId: "core.dev-group",
     label: navLabel("nav.mcp"),
     icon: SparkMcpMcpLine,
     route: "core.mcp",
-    order: 40,
+    order: 190,
   },
   {
     id: "core.acp",
     location: "primary.agentScoped",
-    parentId: "core.workspace-group",
+    parentId: "core.dev-group",
     label: navLabel("nav.acp"),
     icon: SparkScanLine,
     route: "core.acp",
-    order: 50,
+    order: 200,
   },
   {
     id: "core.agent-config",
     location: "primary.agentScoped",
-    parentId: "core.workspace-group",
+    parentId: "core.dev-group",
     label: navLabel("nav.agentConfig"),
     icon: SparkModifyLine,
     route: "core.agent-config",
-    order: 60,
+    order: 210,
   },
   {
     id: "core.agent-stats",
     location: "primary.agentScoped",
-    parentId: "core.workspace-group",
+    parentId: "core.dev-group",
     label: navLabel("nav.agentStats"),
     icon: SparkBarChartLine,
     route: "core.agent-stats",
-    order: 70,
+    order: 220,
   },
   {
     id: "core.checkpoints",
     location: "primary.agentScoped",
-    parentId: "core.agent-group",
+    parentId: "core.dev-group",
     label: navLabel("checkpoints.nav"),
     icon: GitBranch,
     route: "core.checkpoints",
-    order: 80,
+    order: 230,
   },
 
   // ── Settings (Sidebar Menu #2) ───────────────────────────────────────────
@@ -249,8 +256,8 @@ export const BUILTIN_MENU: MenuItem[] = [
     id: "core.offload-policy",
     location: "primary.settings",
     parentId: "core.settings-group",
-    label: navLabel("nav.offloadPolicy", "Tool Offload"),
-    icon: SparkDateLine,
+    label: navLabel("nav.offloadPolicy", "Offload Policy"),
+    icon: SparkDataLine,
     route: "core.offload-policy",
     order: 55,
   },
@@ -259,7 +266,7 @@ export const BUILTIN_MENU: MenuItem[] = [
     location: "primary.settings",
     parentId: "core.settings-group",
     label: navLabel("nav.security"),
-    icon: SparkBrowseLine,
+    icon: SparkScanLine,
     route: "core.security",
     order: 60,
   },
@@ -268,9 +275,18 @@ export const BUILTIN_MENU: MenuItem[] = [
     location: "primary.settings",
     parentId: "core.settings-group",
     label: navLabel("nav.tokenUsage"),
-    icon: SparkDataLine,
+    icon: SparkBarChartLine,
     route: "core.token-usage",
     order: 70,
+  },
+  {
+    id: "core.voice",
+    location: "primary.settings",
+    parentId: "core.settings-group",
+    label: navLabel("nav.voiceTranscription"),
+    icon: SparkMicLine,
+    route: "core.voice",
+    order: 80,
   },
   {
     id: "core.backups",
@@ -279,36 +295,24 @@ export const BUILTIN_MENU: MenuItem[] = [
     label: navLabel("nav.backups"),
     icon: SparkSaveLine,
     route: "core.backups",
-    order: 80,
-  },
-  {
-    id: "core.voice-transcription",
-    location: "primary.settings",
-    parentId: "core.settings-group",
-    label: navLabel("nav.voiceTranscription"),
-    icon: SparkMicLine,
-    route: "core.voice-transcription",
     order: 90,
-  },
-  {
-    id: "core.debug",
-    location: "primary.settings",
-    parentId: "core.settings-group",
-    label: navLabel("nav.debug", "Debug"),
-    icon: SparkDebugLine,
-    route: "core.debug",
-    order: 100,
   },
   {
     id: "core.plugin-manager",
     location: "primary.settings",
     parentId: "core.settings-group",
-    label: navLabel("nav.pluginManager", "Plugin Manager"),
+    label: navLabel("nav.pluginManager"),
     icon: SparkPluginLine,
     route: "core.plugin-manager",
+    order: 100,
+  },
+  {
+    id: "core.debug",
+    location: "primary.settings",
+    parentId: "core.settings-group",
+    label: navLabel("nav.debug"),
+    icon: SparkDebugLine,
+    route: "core.debug",
     order: 110,
   },
 ];
-
-// Self-register at module load. main.tsx imports this file as a side-effect.
-menuRegistry.addBuiltin(BUILTIN_MENU);

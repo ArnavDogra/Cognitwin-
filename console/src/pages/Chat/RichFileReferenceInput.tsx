@@ -664,7 +664,7 @@ const RichFileReferenceInput = forwardRef<unknown, TextAreaProps>(
       >
         <LexicalComposer
           initialConfig={{
-            namespace: "QwenPawRichFileReferenceInput",
+            namespace: "CognitwinRichFileReferenceInput",
             editable: !disabled && !readOnly,
             nodes: [FileReferenceNode, CodeSnippetNode],
             onError(error) {

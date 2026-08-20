@@ -2,7 +2,7 @@
  * hostExternals.ts
  *
  * Exposes shared host dependencies and a reactive plugin registry on
- * `window.QwenPaw` so plugin bundles can register routes and tool renderers
+ * `window.Cognitwin` so plugin bundles can register routes and tool renderers
  * without bundling their own copies of React / antd.
  *
  * Call `installHostExternals()` once at application startup (main.tsx).
@@ -18,17 +18,17 @@ import {
   buildMenuNamespace,
   buildRouteNamespace,
   buildSlotNamespace,
-  type QwenPawAuditNamespace,
-  type QwenPawMenuNamespace,
-  type QwenPawRouteNamespace,
-  type QwenPawSlotNamespace,
+  type CognitwinAuditNamespace,
+  type CognitwinMenuNamespace,
+  type CognitwinRouteNamespace,
+  type CognitwinSlotNamespace,
 } from "./registry/sdk";
 import { menuRegistry, routeRegistry } from "./registry/store";
 import type {
   HostAgentInfo,
   HostSessionInfo,
   HostThemeMode,
-  QwenPawChatNamespace,
+  CognitwinChatNamespace,
 } from "./types/qwenpaw";
 
 declare const VITE_API_BASE_URL: string;
@@ -37,7 +37,7 @@ declare const VITE_API_BASE_URL: string;
 // Public types
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Shared host dependencies exposed to plugin bundles via `window.QwenPaw.host`. */
+/** Shared host dependencies exposed to plugin bundles via `window.Cognitwin.host`. */
 export interface HostExternals {
   React: typeof React;
   ReactDOM: typeof ReactDOM;
@@ -178,20 +178,20 @@ export interface WindowNamespace {
     renderers: Record<string, React.FC<any>>,
   ) => void;
   /** Console-wide plugin Menu API. Attached by installHostExternals(). */
-  menu?: QwenPawMenuNamespace;
+  menu?: CognitwinMenuNamespace;
   /** Console-wide plugin Route API. */
-  route?: QwenPawRouteNamespace;
+  route?: CognitwinRouteNamespace;
   /** Console-wide plugin Slot API (header.left, sider.bottom, …). */
-  slot?: QwenPawSlotNamespace;
+  slot?: CognitwinSlotNamespace;
   /** Chat-surface customization API. Attached by installHostSdk(). */
-  chat?: QwenPawChatNamespace;
+  chat?: CognitwinChatNamespace;
   /** Override audit log (debug). Attached by installHostExternals(). */
-  audit?: QwenPawAuditNamespace;
+  audit?: CognitwinAuditNamespace;
 }
 
 declare global {
   interface Window {
-    QwenPaw: WindowNamespace;
+    Cognitwin: WindowNamespace;
   }
 }
 
@@ -226,12 +226,12 @@ export function installHostExternals(): void {
   const apiBaseUrl =
     typeof VITE_API_BASE_URL !== "undefined" ? VITE_API_BASE_URL : "";
 
-  if (!window.QwenPaw) {
-    (window as any).QwenPaw = {} as WindowNamespace;
+  if (!window.Cognitwin) {
+    (window as any).Cognitwin = {} as WindowNamespace;
   }
 
-  if (!window.QwenPaw.host) {
-    window.QwenPaw.host = {
+  if (!window.Cognitwin.host) {
+    window.Cognitwin.host = {
       React,
       ReactDOM,
       antd,
@@ -243,10 +243,10 @@ export function installHostExternals(): void {
   }
 
   // ── Console-wide extension API ─────────────────────────────────────────
-  if (!window.QwenPaw.menu) window.QwenPaw.menu = buildMenuNamespace();
-  if (!window.QwenPaw.route) window.QwenPaw.route = buildRouteNamespace();
-  if (!window.QwenPaw.slot) window.QwenPaw.slot = buildSlotNamespace();
-  if (!window.QwenPaw.audit) window.QwenPaw.audit = buildAuditNamespace();
+  if (!window.Cognitwin.menu) window.Cognitwin.menu = buildMenuNamespace();
+  if (!window.Cognitwin.route) window.Cognitwin.route = buildRouteNamespace();
+  if (!window.Cognitwin.slot) window.Cognitwin.slot = buildSlotNamespace();
+  if (!window.Cognitwin.audit) window.Cognitwin.audit = buildAuditNamespace();
 
   // ── Back-compat shim ───────────────────────────────────────────────────
   // Legacy registerRoutes(pluginId, routes[]) fans out to:
@@ -257,8 +257,8 @@ export function installHostExternals(): void {
   // EXCEPTION: PawApp routes (path starting with `/apps/`) register the
   // route only — NO sidebar menu entry. PawApps are reachable exclusively
   // through the App Center, which renders them inline via routeRegistry.
-  if (!window.QwenPaw.registerRoutes) {
-    window.QwenPaw.registerRoutes = (pluginId, routes) => {
+  if (!window.Cognitwin.registerRoutes) {
+    window.Cognitwin.registerRoutes = (pluginId, routes) => {
       for (const r of routes) {
         const id = `legacy:${pluginId}:${r.path.replace(/^\//, "")}`;
         routeRegistry.add(pluginId, {
@@ -296,8 +296,8 @@ export function installHostExternals(): void {
     };
   }
 
-  if (!window.QwenPaw.registerToolRender) {
-    window.QwenPaw.registerToolRender = (pluginId, renderers) => {
+  if (!window.Cognitwin.registerToolRender) {
+    window.Cognitwin.registerToolRender = (pluginId, renderers) => {
       pluginSystem.addToolRenderers(pluginId, renderers);
       console.info(
         `[plugin:${pluginId}] registerToolRender → ${Object.keys(

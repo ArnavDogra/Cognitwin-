@@ -11,6 +11,7 @@ import { ExclamationCircleOutlined, SettingOutlined } from "@ant-design/icons";
 import { SparkCopyLine, SparkAttachmentLine } from "@agentscope-ai/icons";
 import { usePlugins } from "../../plugins/PluginContext";
 import { useTranslation } from "react-i18next";
+import { CognitwinWelcome } from './components/CognitwinWelcome';
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import i18n from "../../i18n";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -18,7 +19,7 @@ import sessionApi from "./sessionApi";
 import {
   attachClientMessageId,
   createClientMessageId,
-  QWENPAW_CLIENT_MESSAGE_ID_KEY,
+  COGNITWIN_CLIENT_MESSAGE_ID_KEY,
 } from "../../utils/clientMessageId";
 import defaultConfig, { getDefaultConfig } from "./OptionsPanel/defaultConfig";
 import { chatApi } from "../../api/modules/chat";
@@ -196,7 +197,7 @@ import {
   holdOwnershipLock,
 } from "../../stores/messageQueueStore";
 import {
-  requiresQwenPawModel,
+  requiresCognitwinModel,
   supportsAgentAttachments,
 } from "../../utils/agentBackend";
 
@@ -407,7 +408,7 @@ async function startBackgroundQueue(
               {
                 role: "user",
                 metadata: {
-                  [QWENPAW_CLIENT_MESSAGE_ID_KEY]: clientMessageId,
+                  [COGNITWIN_CLIENT_MESSAGE_ID_KEY]: clientMessageId,
                 },
                 content: [
                   { type: "text", text: item.text },
@@ -748,7 +749,7 @@ function useMultimodalCapabilities(
   locationPathname: string,
   _isChatActive: () => boolean,
   selectedAgent: string,
-  usesQwenPawBackend: boolean,
+  usesCognitwinBackend: boolean,
 ) {
   const [multimodalCaps, setMultimodalCaps] = useState<{
     supportsMultimodal: boolean;
@@ -779,7 +780,7 @@ function useMultimodalCapabilities(
       supportsImage: false,
       supportsVideo: false,
     };
-    if (!usesQwenPawBackend) {
+    if (!usesCognitwinBackend) {
       updateCapsIfChanged(noCaps);
       return;
     }
@@ -817,7 +818,7 @@ function useMultimodalCapabilities(
     } catch {
       updateCapsIfChanged(noCaps);
     }
-  }, [selectedAgent, updateCapsIfChanged, usesQwenPawBackend]);
+  }, [selectedAgent, updateCapsIfChanged, usesCognitwinBackend]);
 
   // Fetch caps on mount and whenever refreshKey changes
   useEffect(() => {
@@ -1295,7 +1296,7 @@ export default function ChatPage() {
   const selectedAgentInfo = agents.find((agent) => agent.id === selectedAgent);
   const selectedAgentBackend = selectedAgentInfo?.backend ?? "qwenpaw";
   const backendCapabilities = selectedAgentInfo?.backend_capabilities;
-  const usesQwenPawBackend = requiresQwenPawModel(selectedAgentBackend);
+  const usesCognitwinBackend = requiresCognitwinModel(selectedAgentBackend);
   const backendCommands = backendCapabilities?.commands ?? [];
   const approvalPresets = backendCapabilities?.approval_presets ?? [];
   const supportsAttachments = supportsAgentAttachments(
@@ -1601,7 +1602,7 @@ export default function ChatPage() {
   );
 
   useEffect(() => {
-    if (!usesQwenPawBackend) {
+    if (!usesCognitwinBackend) {
       setChatSkills([]);
       return;
     }
@@ -1623,7 +1624,7 @@ export default function ChatPage() {
     return () => {
       cancelled = true;
     };
-  }, [selectedAgent, usesQwenPawBackend]);
+  }, [selectedAgent, usesCognitwinBackend]);
 
   const isChatActiveRef = useRef(false);
   isChatActiveRef.current =
@@ -1837,7 +1838,7 @@ export default function ChatPage() {
     location.pathname,
     isChatActive,
     selectedAgent,
-    usesQwenPawBackend,
+    usesCognitwinBackend,
   );
 
   const { setLastChatId, getLastChatId, removeLastChatId } = useAgentStore();
@@ -2536,7 +2537,7 @@ export default function ChatPage() {
         ...buildAuthHeaders(),
       };
 
-      if (usesQwenPawBackend) {
+      if (usesCognitwinBackend) {
         try {
           const activeModels = await providerApi.getActiveModels({
             scope: "effective",
@@ -2627,7 +2628,7 @@ export default function ChatPage() {
           break;
         }
       }
-      if (usesQwenPawBackend) {
+      if (usesCognitwinBackend) {
         applyApprovalLevelToRequestBody(
           requestBody,
           sessionApprovalLevelRef.current,
@@ -2710,7 +2711,7 @@ export default function ChatPage() {
 
       return wrapChatResponseUsageStream(response, chatRef);
     },
-    [extLists, selectedAgent, runningConfigApprovalLevel, usesQwenPawBackend],
+    [extLists, selectedAgent, runningConfigApprovalLevel, usesCognitwinBackend],
   );
 
   const handleFileUpload = useCallback(
@@ -2723,7 +2724,7 @@ export default function ChatPage() {
       const { file, onSuccess, onError, onProgress } = options;
       try {
         // Warn when model has no multimodal support
-        if (usesQwenPawBackend && !multimodalCaps.supportsMultimodal) {
+        if (usesCognitwinBackend && !multimodalCaps.supportsMultimodal) {
           message.warning(t("chat.attachments.multimodalWarning"));
         } else if (
           multimodalCaps.supportsImage &&
@@ -2765,7 +2766,7 @@ export default function ChatPage() {
         onError?.(e instanceof Error ? e : new Error(String(e)));
       }
     },
-    [multimodalCaps, t, usesQwenPawBackend],
+    [multimodalCaps, t, usesCognitwinBackend],
   );
 
   const compactSender = filesDrawerState.kind === "workspace";
@@ -2784,7 +2785,7 @@ export default function ChatPage() {
         description: t("chat.commands.clear.description"),
       },
     ];
-    const nativeCommands: CommandSuggestion[] = usesQwenPawBackend
+    const nativeCommands: CommandSuggestion[] = usesCognitwinBackend
       ? [
           {
             command: "/compact",
@@ -2813,9 +2814,9 @@ export default function ChatPage() {
       loopAvailableModes.map((mode) => mode.slash_command).filter(Boolean),
     );
     // Loop/plugin modes (goal, mission, OMP, custom) share GET /loops with
-    // LoopModeSelector; include them in the slash menu when the QwenPaw
+    // LoopModeSelector; include them in the slash menu when the Cognitwin
     // backend is active. Empty slash_command (default mode) is skipped.
-    const loopSuggestions: CommandSuggestion[] = usesQwenPawBackend
+    const loopSuggestions: CommandSuggestion[] = usesCognitwinBackend
       ? buildLoopSlashSuggestions(
           loopAvailableModes,
           reservedCommands,
@@ -2852,7 +2853,7 @@ export default function ChatPage() {
           message.warning(t("chat.queue.queueFull", { max: MAX_QUEUE_SIZE }));
           return false;
         }
-        const queueText = usesQwenPawBackend
+        const queueText = usesCognitwinBackend
           ? prepareLoopModeMessage(val)
           : val;
         const enqueueIdentity = sessionApi.getSessionIdentity();
@@ -2885,7 +2886,7 @@ export default function ChatPage() {
 
       const textarea = getActiveSenderTextarea();
       if (textarea) {
-        const prepared = usesQwenPawBackend
+        const prepared = usesCognitwinBackend
           ? beginLoopModeSubmission(textarea.value)
           : textarea.value;
         if (prepared !== textarea.value) {
@@ -2944,6 +2945,10 @@ export default function ChatPage() {
       extScalar[ChatScalar.headerLeftHeaderRender];
     const extLeftHeaderRender = extLeftHeaderRenderEntry?.value;
 
+
+    const myCustomWelcomeRender = useCallback((props: WelcomeRenderProps) => (
+      <CognitwinWelcome onPromptClick={(text) => props.onPromptClick?.({ value: text })} />
+    ), []);
     const wrappedWelcomeRender = extWelcomeRender
       ? (props: WelcomeRenderProps) => (
           <PluginSlotBoundary
@@ -2983,7 +2988,7 @@ export default function ChatPage() {
         return resolved.map((s) => ({ label: s.label, value: s.value }));
       },
     );
-    const activePluginSuggestions = usesQwenPawBackend ? pluginSuggestions : [];
+    const activePluginSuggestions = usesCognitwinBackend ? pluginSuggestions : [];
 
     const wrapActionSpec = (
       pluginId: string,
@@ -3106,7 +3111,7 @@ export default function ChatPage() {
             />
             <ChatHeaderTitle />
             <span style={{ flex: 1 }} />
-            {usesQwenPawBackend ? (
+            {usesCognitwinBackend ? (
               <ModelSelector />
             ) : backendCapabilities?.model_selection ? (
               <HarnessModelSelector providerId={selectedAgentBackend} />
@@ -3127,7 +3132,7 @@ export default function ChatPage() {
       },
       welcome: {
         ...i18nConfig.welcome,
-        nick: extNick ?? "QwenPaw",
+        nick: extNick ?? "Cognitwin",
         avatar: extAvatar ?? "/qwenpaw.png",
         ...(extGreeting !== undefined ? { greeting: extGreeting } : {}),
         ...(extDescription !== undefined
@@ -3135,10 +3140,11 @@ export default function ChatPage() {
           : {}),
         ...(extPrompts !== undefined ? { prompts: extPrompts } : {}),
         // SDK uses `render` if present and ignores the other fields.
-        ...(wrappedWelcomeRender ? { render: wrappedWelcomeRender } : {}),
+        ...(wrappedWelcomeRender ? { render: wrappedWelcomeRender } : { render: myCustomWelcomeRender }),
       },
       sender: {
         ...(i18nConfig as any)?.sender,
+        placeholder: "What would you like Cognitwin to do?",
         components: {
           input: RichFileReferenceInput,
         },
@@ -3176,7 +3182,7 @@ export default function ChatPage() {
                 onTranscription={handleWhisperTranscription}
               />
             ) : null}
-            {usesQwenPawBackend && <LoopModeSelector />}
+            {usesCognitwinBackend && <LoopModeSelector />}
             {pluginSenderPrefix}
           </>
         ),
@@ -3186,19 +3192,19 @@ export default function ChatPage() {
               compactSender ? styles.compactSenderAffix : ""
             }`}
           >
-            {(usesQwenPawBackend || backendCapabilities?.context_usage) && (
+            {(usesCognitwinBackend || backendCapabilities?.context_usage) && (
               <ContextUsageIndicator
                 onCompact={handleCompactCommand}
                 onNew={handleNewCommand}
               />
             )}
-            {usesQwenPawBackend && (
+            {usesCognitwinBackend && (
               <SessionProjectDirectory
                 scope={sessionScope}
                 compact={compactSender}
               />
             )}
-            {usesQwenPawBackend ? (
+            {usesCognitwinBackend ? (
               <ApprovalLevelToggle
                 sessionId={queueSessionId}
                 runningConfigApprovalLevel={runningConfigApprovalLevel}
@@ -3464,7 +3470,7 @@ export default function ChatPage() {
     backendCapabilities,
     backendCommands,
     approvalPresets,
-    usesQwenPawBackend,
+    usesCognitwinBackend,
     supportsAttachments,
     runningConfigApprovalLevel,
     queueSessionId,
@@ -3560,7 +3566,7 @@ export default function ChatPage() {
         </div>
 
         {/* Rate-limit guidance banner */}
-        {usesQwenPawBackend && rateLimitAlternatives.length > 0 && (
+        {usesCognitwinBackend && rateLimitAlternatives.length > 0 && (
           <div className={styles.rateLimitBanner}>
             <span className={styles.rateLimitText}>
               {t("chat.rateLimitMessage")}
@@ -3691,7 +3697,7 @@ export default function ChatPage() {
         })}
 
         <Modal
-          open={usesQwenPawBackend && showModelPrompt}
+          open={usesCognitwinBackend && showModelPrompt}
           closable={false}
           footer={null}
           width={480}

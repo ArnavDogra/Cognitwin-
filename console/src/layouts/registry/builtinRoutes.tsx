@@ -23,6 +23,9 @@ import Chat from "../../pages/Chat";
 
 // Lazy pages
 const ChannelsPage = lazyImportWithRetry("../../pages/Control/Channels");
+const MemoryPage = lazyImportWithRetry("../../pages/Memory");
+const BrowserPage = lazyImportWithRetry("../../pages/Browser");
+const SettingsPage = lazyImportWithRetry("../../pages/Settings");
 const SessionsPage = lazyImportWithRetry("../../pages/Control/Sessions");
 const InboxPage = lazyImportWithRetry("../../pages/Inbox");
 const CronJobsPage = lazyImportWithRetry("../../pages/Control/CronJobs");
@@ -72,6 +75,9 @@ export const BUILTIN_ROUTES: Route[] = [
   { id: "core.root", path: "/", component: DefaultRedirect },
   { id: "core.chat", path: "/chat/*", component: Chat },
   { id: "core.files", path: "/files", component: FilesPage },
+  { id: "core.memory", path: "/memory", component: MemoryPage },
+  { id: "core.browser", path: "/browser", component: BrowserPage },
+  { id: "core.settings", path: "/settings", component: SettingsPage },
   { id: "core.channels", path: "/channels", component: ChannelsPage },
   { id: "core.sessions", path: "/sessions", component: SessionsPage },
   { id: "core.inbox", path: "/inbox", component: InboxPage },

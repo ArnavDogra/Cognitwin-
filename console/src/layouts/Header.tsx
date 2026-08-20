@@ -277,8 +277,8 @@ export default function Header() {
     fetch(url, { cache: "no-cache" })
       .then((res) => (res.ok ? res.text() : Promise.reject()))
       .then((text) => {
-        const zhPattern = /###\s*QwenPaw如何更新[\s\S]*?(?=\n###|$)/;
-        const enPattern = /###\s*How to update QwenPaw[\s\S]*?(?=\n###|$)/;
+        const zhPattern = /###\s*Cognitwin如何更新[\s\S]*?(?=\n###|$)/;
+        const enPattern = /###\s*How to update Cognitwin[\s\S]*?(?=\n###|$)/;
         const match = text.match(faqLang === "zh" ? zhPattern : enPattern);
         setUpdateMarkdown(
           match && lang !== "ru"
@@ -344,11 +344,7 @@ export default function Header() {
             <img> below paints.
           */}
           <Slot name="header.logo" kind="replace">
-            <img
-              src={isDark ? "/logo-dark.svg" : "/logo-light.svg"}
-              alt="QwenPaw"
-              className={styles.logoImg}
-            />
+            <strong style={{ fontSize: '18px', marginRight: '8px' }}>Cognitwin</strong>
           </Slot>
           <div className={styles.logoDivider} />
           {version && (
@@ -430,38 +426,10 @@ export default function Header() {
         <Slot name="header.left" kind="fill" />
         <Space size="middle">
           <Slot name="header.right" kind="fill" />
-          {resourcesMenuItems.length > 0 && (
-            <Dropdown menu={{ items: resourcesMenuItems }}>
-              <Button type="text" className={styles.hideOnMobile}>
-                {t("header.resources")} <DownOutlined />
-              </Button>
-            </Dropdown>
-          )}
-          <Tooltip title={t("header.github")}>
-            <Button
-              type="text"
-              icon={<GithubOutlined />}
-              onClick={() => handleNavClick(GITHUB_URL)}
-              className={styles.hideOnMobile}
-            >
-              {t("header.github")}
-            </Button>
-          </Tooltip>
           <div className={styles.headerDivider} />
-          <span className={styles.hideOnMobile}>
-            <LanguageSwitcher />
-          </span>
           <span className={styles.hideOnMobile}>
             <ThemeToggleButton />
           </span>
-          <Dropdown menu={{ items: mobileMenuItems }} placement="bottomRight">
-            <Button
-              type="text"
-              icon={<InfoCircleOutlined />}
-              className={styles.showOnMobile}
-              title={t("header.resources")}
-            />
-          </Dropdown>
         </Space>
       </AntHeader>
 

@@ -8,13 +8,13 @@ import {
 describe("directorySources", () => {
   it("normalizes separators and trailing slashes", () => {
     expect(normalizeDirectoryPath("/repo/qwenpaw/")).toBe("/repo/qwenpaw");
-    expect(normalizeDirectoryPath("C:\\Repo\\QwenPaw\\")).toBe(
+    expect(normalizeDirectoryPath("C:\\Repo\\Cognitwin\\")).toBe(
       "c:/repo/qwenpaw",
     );
   });
 
   it("compares Windows paths without case sensitivity", () => {
-    expect(directoriesMatch("C:\\Repo\\QwenPaw", "c:/repo/qwenpaw/")).toBe(
+    expect(directoriesMatch("C:\\Repo\\Cognitwin", "c:/repo/qwenpaw/")).toBe(
       true,
     );
   });

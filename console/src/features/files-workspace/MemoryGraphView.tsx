@@ -89,7 +89,7 @@ function nodeFileTarget(
   }
 
   // Older graph endpoints did not include navigation metadata. Keep the
-  // standard ReMe/QwenPaw roots openable while the backend is being upgraded.
+  // standard ReMe/Cognitwin roots openable while the backend is being upgraded.
   const normalizedPath = node.path.replace(/\\/g, "/").replace(/^\/+/, "");
   const conventionalRoots: Array<[MemorySection, string]> = [
     ["digest", "digest/"],

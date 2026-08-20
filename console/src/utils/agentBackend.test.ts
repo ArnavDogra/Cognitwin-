@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { requiresQwenPawModel, supportsAgentAttachments } from "./agentBackend";
+import { requiresCognitwinModel, supportsAgentAttachments } from "./agentBackend";
 
-describe("requiresQwenPawModel", () => {
-  it("requires a configured model for native QwenPaw agents", () => {
-    expect(requiresQwenPawModel("qwenpaw")).toBe(true);
+describe("requiresCognitwinModel", () => {
+  it("requires a configured model for native Cognitwin agents", () => {
+    expect(requiresCognitwinModel("qwenpaw")).toBe(true);
   });
 
-  it("does not inspect QwenPaw models for Codex agents", () => {
-    expect(requiresQwenPawModel("codex")).toBe(false);
+  it("does not inspect Cognitwin models for Codex agents", () => {
+    expect(requiresCognitwinModel("codex")).toBe(false);
   });
 });
 

@@ -4,10 +4,10 @@ const defaultConfig = {
   theme: {
     colorPrimary: "#FF7F16",
     darkMode: false,
-    prefix: "qwenpaw",
+    prefix: "Cognitwin",
     leftHeader: {
       logo: "",
-      title: "Work with QwenPaw",
+      title: "Work with Cognitwin",
     },
     bubbleList: {
       userMessageAnchors: {
@@ -21,10 +21,10 @@ const defaultConfig = {
     longTextUpload: {
       enabled: true,
     },
-    disclaimer: "Works for you, grows with you",
+    disclaimer: "Your Personal AI Operating System",
   },
   welcome: {
-    greeting: "Hello, how can I help you today?",
+    greeting: "Cognitwin - Your Personal AI Operating System",
     description:
       "I am a helpful assistant that can help you with your questions.",
     avatar: "/online.svg",

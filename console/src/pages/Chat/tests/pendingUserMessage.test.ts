@@ -41,7 +41,7 @@ vi.mock("../../../api/modules/chat", async (importOriginal) => {
 import sessionApi from "../sessionApi";
 import {
   attachClientMessageId,
-  QWENPAW_CLIENT_MESSAGE_ID_KEY,
+  COGNITWIN_CLIENT_MESSAGE_ID_KEY,
 } from "../../../utils/clientMessageId";
 
 const STORAGE_PREFIX = "qwenpaw_pending_user_msg_";
@@ -84,7 +84,7 @@ function userMsg(id: string, text: string, clientMessageId?: string): Message {
       ...(clientMessageId
         ? {
             metadata: {
-              [QWENPAW_CLIENT_MESSAGE_ID_KEY]: clientMessageId,
+              [COGNITWIN_CLIENT_MESSAGE_ID_KEY]: clientMessageId,
             },
           }
         : {}),
@@ -169,7 +169,7 @@ describe("patchLastUserMessage — pending cache lifecycle", () => {
       role: "user",
       metadata: {
         source: "sdk",
-        [QWENPAW_CLIENT_MESSAGE_ID_KEY]: "client-new",
+        [COGNITWIN_CLIENT_MESSAGE_ID_KEY]: "client-new",
       },
     });
   });

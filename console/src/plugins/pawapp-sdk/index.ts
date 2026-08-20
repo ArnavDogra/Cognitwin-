@@ -2,7 +2,7 @@
  * @qwenpaw/pawapp-sdk — Frontend SDK for PawApps.
  *
  * In same-origin mode (M0-M2), this is a thin convenience wrapper
- * over `window.QwenPaw.*` host capabilities + authenticated fetch.
+ * over `window.Cognitwin.*` host capabilities + authenticated fetch.
  *
  * Usage:
  *   import { paw } from '@qwenpaw/pawapp-sdk';

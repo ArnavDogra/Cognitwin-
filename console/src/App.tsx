@@ -73,6 +73,11 @@ const GlobalStyle = createGlobalStyle`
   margin: 0;
   box-sizing: border-box;
 }
+html, body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 `;
 
 function AuthGuard({
@@ -255,7 +260,14 @@ function AppInner() {
             ? antdTheme.darkAlgorithm
             : antdTheme.defaultAlgorithm,
           token: {
-            colorPrimary: "#FF7F16",
+            colorPrimary: "#5B5BD6",
+            colorInfo: "#5B5BD6",
+            colorSuccess: "#22c55e",
+            colorBgBase: isDark ? "#0B0F19" : "#ffffff",
+            colorBgContainer: isDark ? "#111827" : "#ffffff",
+            colorBgElevated: isDark ? "#1f2937" : "#ffffff",
+            borderRadius: 12,
+            fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
           },
         }}
       >

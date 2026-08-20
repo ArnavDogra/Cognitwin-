@@ -6,7 +6,7 @@
  * the bottom. We intentionally do NOT re-export `IAgentScopeRuntimeWebUIOptions`
  * so the public surface stays stable across vendor upgrades.
  *
- * Inside the host, the global `Window.QwenPaw` is declared in
+ * Inside the host, the global `Window.Cognitwin` is declared in
  * `console/src/plugins/hostExternals.ts` — keep that the single source
  * of truth to avoid duplicate-declaration conflicts.
  *
@@ -105,7 +105,7 @@ export type ChatRequestPayloadTransform = (ctx: {
   selectedAgent: string;
 }) => Record<string, unknown> | void;
 
-export interface QwenPawChatNamespace {
+export interface CognitwinChatNamespace {
   welcome: {
     set(
       pluginId: string,
@@ -253,7 +253,7 @@ export interface QwenPawChatNamespace {
   disposeAll(pluginId: string): void;
 }
 
-export interface QwenPawHostNamespace {
+export interface CognitwinHostNamespace {
   // ── Shared dependencies (attached by hostExternals.ts) ────────────────────
   React: typeof React;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -280,7 +280,7 @@ export interface QwenPawHostNamespace {
   fetch(path: string, init?: RequestInit): Promise<Response>;
 }
 
-export interface QwenPawAuditNamespace {
+export interface CognitwinAuditNamespace {
   overrides(): OverrideRecord[];
 }
 
@@ -293,10 +293,10 @@ export interface PluginRouteDeclaration {
   priority?: number;
 }
 
-export interface QwenPawWindowNamespace {
-  host: QwenPawHostNamespace;
-  chat: QwenPawChatNamespace;
-  audit: QwenPawAuditNamespace;
+export interface CognitwinWindowNamespace {
+  host: CognitwinHostNamespace;
+  chat: CognitwinChatNamespace;
+  audit: CognitwinAuditNamespace;
   modules: Record<string, Record<string, unknown>>;
   registerRoutes?(pluginId: string, routes: PluginRouteDeclaration[]): void;
   registerToolRender?(
@@ -306,11 +306,11 @@ export interface QwenPawWindowNamespace {
 }
 
 // Plugin projects: uncomment this in your own qwenpaw-host.d.ts to type
-// `window.QwenPaw.*` accesses in plugin code.
+// `window.Cognitwin.*` accesses in plugin code.
 //
 // declare global {
 //   interface Window {
-//     QwenPaw: QwenPawWindowNamespace;
+//     Cognitwin: CognitwinWindowNamespace;
 //   }
 // }
 

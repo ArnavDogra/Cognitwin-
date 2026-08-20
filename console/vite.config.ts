@@ -57,7 +57,7 @@ export default defineConfig(({ command, mode }) => {
       port: 5173,
       proxy: {
         "/api": {
-          target: "http://localhost:8088",
+          target: "http://127.0.0.1:8088",
           changeOrigin: false,
         },
       },
@@ -127,7 +127,7 @@ export default defineConfig(({ command, mode }) => {
       include: ["diff"],
     },
     build: {
-      // Output to QwenPaw's console directory,
+      // Output to Cognitwin's console directory,
       // so we don't need to copy files manually after build.
       // outDir: path.resolve(__dirname, "../src/qwenpaw/console"),
       // emptyOutDir: true,

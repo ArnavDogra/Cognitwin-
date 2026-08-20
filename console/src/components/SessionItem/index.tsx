@@ -228,7 +228,10 @@ const SessionItem: React.FC<SessionItemProps> = ({
                 <div className={styles.name}>{name || "New Chat"}</div>
               </div>
             ) : (
-              <div className={styles.name}>{name || "New Chat"}</div>
+              <div className={styles.titleRowSidebar}>
+                <div className={styles.name}>{name || "New Chat"}</div>
+                {time && <span className={styles.timeSidebar}>{time}</span>}
+              </div>
             )}
           </>
         )}

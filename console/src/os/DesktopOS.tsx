@@ -467,12 +467,12 @@ export default function DesktopOS() {
         </div>
       )}
 
-      {/* Persistent background watermark — QwenPaw OS brand mark. Sits at the
+      {/* Persistent background watermark — Cognitwin OS brand mark. Sits at the
           lowest layer and never intercepts pointer events, so it reads as a
           backdrop behind icons and app windows rather than a card. */}
       <div className={styles.emptyHint}>
         <img src="/qwenpaw.png" alt="" />
-        <div className={styles.emptyBrandName}>QwenPaw OS</div>
+        <div className={styles.emptyBrandName}>Cognitwin OS</div>
       </div>
 
       {/* Windows layer */}

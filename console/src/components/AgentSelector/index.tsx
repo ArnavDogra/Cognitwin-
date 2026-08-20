@@ -2,7 +2,7 @@ import { Select, Tooltip } from "antd";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import {
-  Bot,
+  Orbit,
   CheckCircle,
   ChevronDown,
   ChevronRight,
@@ -207,7 +207,7 @@ export default function AgentSelector({
         overlayInnerStyle={{ background: "rgba(0,0,0,0.75)", color: "#fff" }}
       >
         <div className={styles.agentSelectorCollapsed}>
-          <Bot size={18} strokeWidth={2} />
+          <Orbit size={18} strokeWidth={2} />
           {currentAgentInfo && (
             <span className={styles.collapsedStatusIndicator}>
               <AgentStatusIndicator
@@ -292,7 +292,7 @@ export default function AgentSelector({
           />
         </div>
         <div className={styles.agentOptionIcon}>
-          <Bot size={16} strokeWidth={2} />
+          <Orbit size={16} strokeWidth={2} />
         </div>
         <div className={styles.agentOptionContent}>
           <div className={styles.agentOptionName}>
@@ -425,7 +425,7 @@ export default function AgentSelector({
                     status={agent.startup_status}
                     enabled={agent.enabled}
                   />
-                  <Bot size={14} strokeWidth={2} />
+                  <Orbit size={14} strokeWidth={2} />
                   <span>{getAgentDisplayName(agent, t)}</span>
                 </div>
               }
@@ -446,7 +446,7 @@ export default function AgentSelector({
                       status={agent.startup_status}
                       enabled={agent.enabled}
                     />
-                    <Bot size={14} strokeWidth={2} />
+                    <Orbit size={14} strokeWidth={2} />
                     <span>{getAgentDisplayName(agent, t)}</span>
                   </div>
                 }

@@ -115,6 +115,7 @@ const VirtualRow = React.memo(function VirtualRow({
         generating={session.generating}
         pinned={session.pinned}
         archived={session.archived}
+        time={session.updated_at ? new Date(session.updated_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : undefined}
         active={
           session.id === data.currentSessionId ||
           (!!data.currentSessionId && session.realId === data.currentSessionId)
